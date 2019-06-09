@@ -1,0 +1,1 @@
+# vanaurum-gcp
