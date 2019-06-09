@@ -15,8 +15,4 @@ class TestIngest(unittest.TestCase):
     def test_get_remote_data(self):
         self.assertIsNotNone(self.df)
 
-    def test_temporary_csv_directory(self):
-        path = 
-        self.assertTrue(os.path.isfile(path))    
-    
     
