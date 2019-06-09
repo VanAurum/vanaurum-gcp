@@ -31,8 +31,7 @@ class TestHelpers(unittest.TestCase):
         safe = _safe_filename(filename)
         self.assertIn(date, safe)
 
-
     def test_upload_file(self):
-        
+        pass
     
     
