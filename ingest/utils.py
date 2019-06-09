@@ -19,7 +19,6 @@ from helpers.indicators import (
             build_ma_deviations, 
             clean_dataframe, 
             build_roc, 
-            build_ratio, 
             build_bop, 
             build_bopma,
     )
