@@ -10,38 +10,6 @@ from scipy import signal
 #3rd party imports
 
 
-
-def build_ratio(numerator,denominator): 
-
-    query_num=f'SELECT "DATE", "CLOSE", "HIGH", "LOW", "OPEN" FROM "{numerator}";'
-    query_den=f'SELECT "DATE", "CLOSE", "HIGH", "LOW", "OPEN" FROM "{denominator}";'
-    #If returns is empty, this is the first pass. Load the first asset into returns.
-    try:          
-        num=query_to_df(query_num)
-        num.columns=['DATE',numerator+'CLOSE',numerator+'OPEN',numerator+'HIGH',numerator+'LOW']
-    except:
-        print('error fetching numerator '+str(numerator)) 
-    try:       
-        den=query_to_df(query_den)
-        den.columns=['DATE',denominator+'CLOSE',denominator+'OPEN',denominator+'HIGH',denominator+'LOW']
-    except:
-        print('error fetching denominator '+str(denominator))
-
-    merged=pd.merge(num,den,how='left',on='DATE')
-    merged.dropna(inplace=True)
-    try:
-        merged['CLOSE']=merged[numerator+'CLOSE']/merged[denominator+'CLOSE']
-        merged['OPEN']=merged[numerator+'OPEN']/merged[denominator+'OPEN']
-        merged['HIGH']=merged[numerator+'HIGH']/merged[denominator+'HIGH']
-        merged['LOW']=merged[numerator+'LOW']/merged[denominator+'LOW']
-    except:
-        print('Error calculating ratio for '+numerator+' and '+denominator)
-    print(list(merged))
-    merged.drop([numerator+'CLOSE', denominator+'CLOSE', numerator+'OPEN',denominator+'OPEN',numerator+'HIGH',denominator+'HIGH',numerator+'LOW',denominator+'LOW'], axis=1,inplace=True)
-    print(list(merged))             
-    return merged      
-
-
 def clean_dataframe(df):
 
     df.columns = [x.upper() for x in df.columns]
