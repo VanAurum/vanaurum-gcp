@@ -35,11 +35,11 @@ def get_remote_data(tag):
     quandl.ApiConfig.api_key = keys.QUANDL_KEY
 
     try:
-        code=tag_conv_lib(tag)
+        code = tag_conv_lib(tag)
     except KeyError as error:
         print(error)
         print('A key error occurred when converting the tag '+tag+' to its Quandl code.')
-        code=None    
+        code = None    
 
     if (code==None):
         print('Code for '+tag+' does not exist')
@@ -52,14 +52,10 @@ def get_remote_data(tag):
             except Exception as str_error:
                 print(str_error)
                 if (x<4):
-                    msg='Error: could not retrieve Quandl data for code. An error occurred: '+tag+'. Waiting 2 seconds and then attempting again.'
-                    exceptions.append(msg)
-                    exceptions.append(str_error)                   
+                    print(' Error: could not retrieve Quandl data for code. An error occurred: '+tag+'. Waiting 2 seconds and then attempting again.')                
                     pass
                 else:
-                    msg='Tried to retreive data for '+tag+' five times. Moving to next dataset'
-                    exceptions.append(msg)
-
+                    print('Tried to retreive data for '+tag+' five times. Moving to next dataset')
                     return    
             if str_error:
                 sleep(2)
@@ -80,8 +76,8 @@ def get_remote_data(tag):
 
 
 def tag_conv_lib(tag):
-    tag_lib=data_settings.FUTURES_TAG_LIST   
-    if (str(tag_lib.get(tag))==None):        
+    tag_lib = data_settings.FUTURES_TAG_LIST   
+    if (str(tag_lib.get(tag)) == None):        
         exceptions.append('Error: No data provider tag available for '+tag+'. Occurred in tag_conv_lib Line 33.')
         return None
   
