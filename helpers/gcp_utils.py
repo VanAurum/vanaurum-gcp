@@ -6,7 +6,7 @@ import pandas as pd
 import logging
 
 # Local Imports
-from config import keys
+from config import keys, log_settings
 
 #3rd Party Imports
 import six
@@ -17,9 +17,10 @@ from werkzeug.exceptions import BadRequest
 
 # Initialize logger
 logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    datefmt='%m/%d/%Y %I:%M:%S %p')
+    level=log_settings.LOG_LEVEL,
+    format=log_settings.LOG_FORMAT,
+    datefmt=log_settings.LOG_DATE_FORMAT,
+    )
 log = logging.getLogger(__name__)
 
 

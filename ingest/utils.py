@@ -11,7 +11,7 @@ from google.cloud import storage
 
 
 #local imports
-from config import keys, data_settings
+from config import keys, data_settings, log_settings
 from helpers.gcp_utils import clean_dataframe
 from helpers.indicators import (
             build_rsi, 
@@ -29,9 +29,10 @@ from helpers.indicators import (
 
 # Initialize logger
 logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    datefmt='%m/%d/%Y %I:%M:%S %p')
+    level=log_settings.LOG_LEVEL,
+    format=log_settings.LOG_FORMAT,
+    datefmt=log_settings.LOG_DATE_FORMAT,
+    )
 log = logging.getLogger(__name__)
 
 
@@ -68,7 +69,7 @@ def get_remote_data(tag):
                 else:
                     log.warning('Tried to retreive data for '+tag+' five times. Moving to next dataset')
                     return    
-            if str_error:
+            if str_error in locals():
                 time.sleep(2)
             else:
                 break              
@@ -91,36 +92,7 @@ def tag_conv_lib(tag):
     if (str(tag_lib.get(tag)) == None):        
         log.warning('Error: No data provider tag available for '+tag+'. Occurred in tag_conv_lib Line 33.')
         return None
-    return tag_lib[tag]    
-
-
-def update_single_asset(asset=None, replace=False):
-    '''
-    Retrieves data for a single asset and uploads it to master database.
-    '''
-    if asset:
-        asset = asset.upper()
-    else:
-        return    
-    data = get_remote_data(asset)   
-    data = map_data(data, asset)
-
-    try:
-        num_rows = len(data)
-    except:
-        num_rows = 0    
-    print(data.shape)
-    if (num_rows<=1):
-        msg='Cancelled upload for '+asset+' because dataframe size after mapping is ZERO'
-        pass
-    else:  
-        if replace:  
-            df_to_sql_replace(asset,data)
-        else:    
-            df_to_sql(asset,data)
-        del data
-        gc.collect()
-    return    
+    return tag_lib[tag]     
 
 
 def handle_special_cases(df, tag):
