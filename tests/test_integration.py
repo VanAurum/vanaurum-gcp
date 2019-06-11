@@ -6,7 +6,7 @@ import datetime
 # Local imports
 from config.keys import QUANDL_KEY
 from config.data_settings import *
-from ingest.utils import get_remote_data
+from ingest.utils import get_remote_data, map_data
 from helpers.gcp_utils import (
     df_to_temp_csv,
     _safe_filename,
@@ -17,11 +17,12 @@ from helpers.gcp_utils import (
 
 class TestHelpers(unittest.TestCase):
 
-    df = get_remote_data('GOLD_D')
-
     def test_upload_file(self):
-        path = df_to_temp_csv(self.df, 'GOLD_D.csv')
-        url = upload_file(path, 'GOLD_D.csv')
+        test_asset = 'GOLD_D'
+        df = get_remote_data(test_asset)
+        df = map_data(df, test_asset)
+        path = df_to_temp_csv(df, test_asset+'.csv')
+        url = upload_file(path, test_asset+'.csv')
         self.assertIsNotNone(url)
         print(url)
 

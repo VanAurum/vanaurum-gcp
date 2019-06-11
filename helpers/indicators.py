@@ -8,67 +8,7 @@ from scipy import signal
 #Local imports
 
 #3rd party imports
-
-
-def clean_dataframe(df):
-
-    df.columns = [x.upper() for x in df.columns]
-    columns=list(df)
-    if('Date' not in columns and 'DATE' not in columns and 'date'  not in columns):
-        df.reset_index(level=0, inplace=True)
-        df.columns = [x.upper() for x in df.columns]
-
-    columns=list(df)
-    if ('MID' in columns):
-        #If cryptocurrency
-        try:
-            #If dataset has VOLUME
-            col_list=['DATE','HIGH','LOW','MID','LAST','VOLUME']
-            df=df[col_list]
-            df.columns=['DATE','HIGH','LOW','MID','CLOSE','VOLUME']
-        except:
-            #If it doesn't have VOLUME
-            col_list=['DATE','HIGH','LOW','MID','LAST']
-            df=df[col_list]
-            df.columns=['DATE','HIGH','LOW','MID','CLOSE']    
-    elif ('SETTLE' in columns):
-        #If data from SCF
-        try:
-            #If dataset has VOLUME
-            col_list=['DATE','OPEN','HIGH','LOW','SETTLE','VOLUME']
-            df=df[col_list]
-            df.columns=['DATE','OPEN','HIGH','LOW','CLOSE','VOLUME']
-        except:
-            col_list=['DATE','OPEN','HIGH','LOW','SETTLE']
-            df=df[col_list]
-            df.columns=['DATE','OPEN','HIGH','LOW','CLOSE']    
-    elif ('CLOSE' in columns):
-        #If CLOSE is already specified.
-        #Economic data points will be ingested as a dataframe with two columns. By checking if the length of the column list is greater
-        #than 2 we screen for that.
-        if (len(columns)>2):
-            if ('ADJ_CLOSE' in columns):
-                try:
-                    col_list=['DATE','ADJ_OPEN','ADJ_HIGH','ADJ_LOW','ADJ_CLOSE','ADJ_VOLUME']
-                    df=df[col_list]
-                    df.columns=['DATE','OPEN','HIGH','LOW','CLOSE','VOLUME']
-                except:        
-                    pass
-        else:
-            pass
-
-    else:
-        print('Could not clean dataframe.  Columns are misspecified or unhandled.')
-        print(list(df))
-        return None
-
-    df=df.sort_values('DATE')
-    print('Sorted the date column')
-    df=df.reset_index(drop=True)
-    print('Reset dataframe index')    
-    print('CLEANED DATAFRAME HEADERS:...')
-    print(list(df))
-    return df            
+       
 
 def build_rsi(df):
     
