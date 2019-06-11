@@ -1,2 +1,4 @@
 venv
 vanaurum-a6b766a3f2d7.json
+.gitignore
+_pycache__/
