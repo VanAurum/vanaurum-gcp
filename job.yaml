@@ -1,0 +1,19 @@
+# job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: vanaurum-etl
+spec:
+  parallelism: 3
+  template:
+    metadata:
+      name: vanaurum-etl
+    spec:
+      containers:
+        - name: worker
+          image: gcr.io/vanaurum/worker
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 0.51
+      restartPolicy: OnFailure
